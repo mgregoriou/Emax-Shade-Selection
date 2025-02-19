@@ -52,7 +52,7 @@
     <label>Incisal Shade (RX): <input type="text" id="incisal"></label><br>
     <label>Body/Mid Shade: <input type="text" id="body"></label><br>
     <label>Gingival Shade: <input type="text" id="gingival"></label><br>
-    <label>Stump Shade: <input type="text" id="stump"></label><br> <!-- New Stump Shade Input -->
+    <label>Stump Shade: <input type="text" id="stump"></label><br> <!-- Stump Shade Input -->
     <button onclick="displayShade()">Submit</button>
 
     <!-- Output Section -->
@@ -60,30 +60,44 @@
     <p>Shade Categories: <span id="categories"></span></p>
 
     <script>
-        // RX Shade to Puck Shade conversion mapping
+        // Full RX Shade to Puck Shade conversion mapping (Bioform, 3D Master, Chromascope, Vita Classic, Bleach)
         const shadeConversion = {
             "A1": "A1", "A2": "A1", "A3": "A2", "A3.5": "A3", "A4": "A3.5",
             "B1": "B1", "B2": "B1", "B3": "B2", "B4": "B3",
             "C1": "C1", "C2": "C1", "C3": "C2", "C4": "C3",
             "D2": "B2", "D3": "A3", "D4": "A3",
             "OM1": "OM1", "OM2": "OM2", "OM3": "OM3",
-            "3D": "OM3"
+            "1M1": "B1", "1M2": "A1", "2L1.5": "A1", "2L2.5": "A2", "2M1": "A1",
+            "3L1.5": "B2", "3M1": "C1", "3M2": "B2", "3M3": "A3",
+            "4M1": "B2", "4M2": "A3", "5M1": "C2", "5M2": "A3.5",
+            // Chromascope
+            "01/110": "A1", "1A/120": "A2", "2A/130": "A2", "1C/140": "A3", 
+            "2B/210": "A3", "1D/220": "A3", "1E/230": "A3", "2C/240": "A3.5",
+            "3A/310": "B3", "5B/320": "B4", "2E/330": "B4", "3E/340": "A4",
+            // Bioform
+            "B51": "A1", "B52": "B2", "B53": "A2", "B54": "A3", "B55": "B3",
+            "B69": "D4", "B77": "C2", "B81": "C3"
         };
 
         // Mapping for Shade Categories (MT, LT, HT, MO, HO) based on Stump Shade Influence
         const categoryMapping = {
-            "A1": { "light": ["MTA1", "LTA1", "HTA1", "MO1", "HO1"], "dark": ["MO1", "HO2"] },
-            "A2": { "light": ["MTA2", "LTA2", "HTA2", "MO2", "HO1"], "dark": ["MO2", "HO2"] },
-            "A3": { "light": ["MTA3", "LTA3", "HTA3", "MO2", "HO2"], "dark": ["MO3", "HO2"] },
-            "A3.5": { "light": ["MTA3.5", "LTA3.5", "HTA3.5", "MO4", "HO2"], "dark": ["MO4", "HO3"] },
-            "A4": { "light": ["MTA4", "LTA4", "HTA4", "MO4", "HO2"], "dark": ["MO4", "HO3"] },
-            "B1": { "light": ["MTB1", "LTB1", "HTB1", "MO1", "HO1"], "dark": ["MO1", "HO2"] },
-            "B2": { "light": ["MTB2", "LTB2", "HTB2", "MO3", "HO1"], "dark": ["MO3", "HO2"] },
-            "B3": { "light": ["MTB3", "LTB3", "HTB3", "MO3", "HO1"], "dark": ["MO3", "HO2"] },
-            "B4": { "light": ["MTB4", "LTB4", "HTB4", "MO3", "HO1"], "dark": ["MO3", "HO2"] },
-            "OM1": { "light": ["MTBL1", "LTBL1", "HTBL1", "MO0", "HO0"], "dark": ["MO1", "HO1"] },
-            "OM2": { "light": ["MTBL2", "LTBL2", "HTBL2", "MO0", "HO0"], "dark": ["MO1", "HO1"] },
-            "OM3": { "light": ["MTBL3", "LTBL3", "HTBL3", "MO0", "HO0"], "dark": ["MO1", "HO2"] }
+            "A1": ["MTA1", "LTA1", "HTA1", "MO1", "HO1"],
+            "A2": ["MTA2", "LTA2", "HTA2", "MO2", "HO1"],
+            "A3": ["MTA3", "LTA3", "HTA3", "MO2", "HO2"],
+            "A3.5": ["MTA3.5", "LTA3.5", "HTA3.5", "MO4", "HO2"],
+            "B1": ["MTB1", "LTB1", "HTB1", "MO1", "HO1"],
+            "B2": ["MTB2", "LTB2", "HTB2", "MO3", "HO1"],
+            "D4": ["MTD4", "LTD4", "HTD4", "MO4", "HO3"],
+            "OM1": ["MTBL1", "LTBL1", "HTBL1", "MO0", "HO0"]
+        };
+
+        // Stump Shade Influence (ND7, ND8, etc.)
+        const stumpShadeConversion = {
+            "ND7": "A1",
+            "ND8": "A2",
+            "ND9": "A3",
+            "ND10": "A3.5",
+            "ND11": "B1"
         };
 
         function displayShade() {
@@ -91,32 +105,19 @@
             let incisalShade = document.getElementById("incisal").value.trim().toUpperCase();
             let bodyShade = document.getElementById("body").value.trim().toUpperCase();
             let gingivalShade = document.getElementById("gingival").value.trim().toUpperCase();
-            let stumpShade = document.getElementById("stump").value.trim().toLowerCase(); // Stump shade input (light or dark)
-
-            console.log("Input Incisal Shade:", incisalShade);
-            console.log("Input Body Shade:", bodyShade);
-            console.log("Input Gingival Shade:", gingivalShade);
-            console.log("Input Stump Shade:", stumpShade);
+            let stumpShade = document.getElementById("stump").value.trim().toUpperCase();
 
             // Convert RX shades to Puck shades
             let convertedIncisal = shadeConversion[incisalShade] || "";
             let convertedBody = shadeConversion[bodyShade] || "";
             let convertedGingival = shadeConversion[gingivalShade] || "";
+            let convertedStump = stumpShadeConversion[stumpShade] || "";
 
-            console.log("Converted Incisal Shade:", convertedIncisal);
-            console.log("Converted Body Shade:", convertedBody);
-            console.log("Converted Gingival Shade:", convertedGingival);
+            // Determine the final shade (prioritizing incisal, then body, then gingival, then stump)
+            let finalShade = convertedIncisal || convertedBody || convertedGingival || convertedStump || "No shade entered";
 
-            // Determine the final shade
-            let finalShade = convertedIncisal || convertedBody || convertedGingival || "No shade entered";
-
-            // Determine shade categories based on stump shade
-            let categories = categoryMapping[finalShade] 
-                ? (stumpShade === "dark" ? categoryMapping[finalShade]["dark"] : categoryMapping[finalShade]["light"]) 
-                : ["No matching categories"];
-
-            console.log("Final Selected Shade:", finalShade);
-            console.log("Matching Categories:", categories);
+            // Find shade categories
+            let categories = categoryMapping[finalShade] || ["No matching categories"];
 
             // Display the selected shade and categories
             document.getElementById("output").innerText = finalShade;
