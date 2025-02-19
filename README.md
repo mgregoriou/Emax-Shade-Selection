@@ -71,11 +71,13 @@
         // Mapping of Material Types (MT, LT, HT, MO, HO) based on Stump Shade & Final Shade
         const materialTypeMapping = {
             "A1": { "ND1": ["MTA1", "LTA1", "HTA1", "MO1", "HO1"], "ND2": ["MTA1", "LTA1", "HTA1", "MO1", "HO1"] },
-            "A2": { "ND3": ["MTA2", "LTA2", "HTA2", "MO2", "HO2"], "ND4": ["MTA2", "LTA2", "HTA2", "MO2", "HO2"] },
-            "A3": { "ND5": ["MTA3", "LTA3", "HTA3", "MO3", "HO3"], "ND6": ["MTA3", "LTA3", "HTA3", "MO3", "HO3"] },
-            "A3.5": { "ND7": ["MTA3.5", "LTA3.5", "HTA3.5", "MO4", "HO4"], "ND8": ["MTA3.5", "LTA3.5", "HTA3.5", "MO4", "HO4"] },
-            "B1": { "ND6": ["MTB1", "LTB1", "HTB1", "MO1", "HO1"], "ND7": ["MTB1", "LTB1", "HTB1", "MO1", "HO1"] },
-            "B2": { "ND8": ["MTB2", "LTB2", "HTB2", "MO3", "HO2"], "ND9": ["MTB2", "LTB2", "HTB2", "MO3", "HO2"] }
+            "A2": { "ND2": ["MTA2", "LTA2", "HTA2", "MO2", "HO1"], "ND3": ["MTA2", "LTA2", "HTA2", "MO2", "HO2"] },
+            "A3": { "ND3": ["MTA3", "LTA3", "HTA3", "MO3", "HO2"], "ND4": ["MTA3", "LTA3", "HTA3", "MO3", "HO3"] },
+            "A3.5": { "ND4": ["MTA3.5", "LTA3.5", "HTA3.5", "MO4", "HO3"], "ND5": ["MTA3.5", "LTA3.5", "HTA3.5", "MO4", "HO4"] },
+            "B1": { "ND6": ["MTB1", "LTB1", "HTB1", "MO1", "HO1"], "ND1": ["MTB1", "LTB1", "HTB1", "MO1", "HO1"] },
+            "B2": { "ND7": ["MTB2", "LTB2", "HTB2", "MO3", "HO2"], "ND2": ["MTB2", "LTB2", "HTB2", "MO3", "HO2"] },
+            "B3": { "ND8": ["MTB3", "LTB3", "HTB3", "MO3", "HO1"], "ND3": ["MTB3", "LTB3", "HTB3", "MO3", "HO1"] },
+            "C1": { "ND9": ["MTC1", "LTC1", "HTC1", "MO1", "HO1"], "ND4": ["MTC1", "LTC1", "HTC1", "MO1", "HO1"] }
         };
 
         function displayShade() {
@@ -84,6 +86,9 @@
             let bodyShade = document.getElementById("body").value.trim().toUpperCase();
             let gingivalShade = document.getElementById("gingival").value.trim().toUpperCase();
             let stumpShade = document.getElementById("stump").value.trim().toUpperCase();
+
+            // Remove extra spaces from stump shade input
+            stumpShade = stumpShade.replace(/\s+/g, "");
 
             // Convert Stump Shade to Puck Shade
             let convertedStump = stumpShadeMapping[stumpShade] || "";
