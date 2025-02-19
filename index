@@ -41,7 +41,7 @@
 </head>
 <body>
 
-    <!-- Corrected Company Logo Reference -->
+    <!-- Company Logo -->
     <img src="OPI.jpg" alt="Company Logo" onerror="this.onerror=null; this.src='default-logo.png';">
 
     <!-- Main Title and Subtitle -->
@@ -60,7 +60,7 @@
     <p>Shade Categories: <span id="categories"></span></p>
 
     <script>
-        // Full RX Shade to Puck Shade conversion mapping (Bioform, 3D Master, Chromascope, Vita Classic, Bleach)
+        // RX Shade to Puck Shade conversion mapping
         const shadeConversion = {
             // Vita Classic & 3D Master
             "A1": "A1", "A2": "A1", "A3": "A2", "A3.5": "A3", "A4": "A3.5",
@@ -85,16 +85,12 @@
             "ND5": "A3.5", "ND6": "B1", "ND7": "B2", "ND8": "B3", "ND9": "C1"
         };
 
-        // Shade Categories (MT, LT, HT, MO, HO) based on Stump Shade Influence
+        // Shade Categories (MT, LT, HT, MO, HO) based on Stump Shade
         const categoryMapping = {
-            "A1": ["MTA1", "LTA1", "HTA1", "MO1", "HO1"],
-            "A2": ["MTA2", "LTA2", "HTA2", "MO2", "HO1"],
-            "A3": ["MTA3", "LTA3", "HTA3", "MO2", "HO2"],
-            "A3.5": ["MTA3.5", "LTA3.5", "HTA3.5", "MO4", "HO2"],
-            "B1": ["MTB1", "LTB1", "HTB1", "MO1", "HO1"],
-            "B2": ["MTB2", "LTB2", "HTB2", "MO3", "HO1"],
-            "D4": ["MTD4", "LTD4", "HTD4", "MO4", "HO3"],
-            "OM1": ["MTBL1", "LTBL1", "HTBL1", "MO0", "HO0"]
+            "A1": { "NDH": ["LTA1", "MO1", "HO1"], "NDL": ["LTA1", "MO2", "HO2"] },
+            "A2": { "NDH": ["LTA2", "MO2", "HO1"], "NDL": ["LTA2", "MO3", "HO2"] },
+            "A3": { "NDH": ["LTA3", "MO3", "HO2"], "NDL": ["LTA3", "MO4", "HO3"] },
+            "B1": { "NDH": ["LTB1", "MO1", "HO1"], "NDL": ["LTB1", "MO2", "HO2"] }
         };
 
         function displayShade() {
@@ -113,8 +109,10 @@
             // Determine the final shade (priority: Incisal > Body > Gingival > Stump)
             let finalShade = convertedIncisal || convertedBody || convertedGingival || convertedStump || "No shade entered";
 
-            // Find shade categories
-            let categories = categoryMapping[finalShade] || ["No matching categories"];
+            // Determine shade categories based on stump shade
+            let categories = categoryMapping[finalShade] && categoryMapping[finalShade][stumpShade] 
+                ? categoryMapping[finalShade][stumpShade] 
+                : ["No matching categories"];
 
             // Display the selected shade and categories
             document.getElementById("output").innerText = finalShade;
