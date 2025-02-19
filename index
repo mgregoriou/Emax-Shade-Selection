@@ -9,7 +9,7 @@
             margin: 20px;
         }
         img {
-            width: 500px; /* Increased logo size */
+            width: 500px;
             margin-bottom: 10px;
         }
         h1 {
@@ -62,24 +62,30 @@
     <script>
         // Full RX Shade to Puck Shade conversion mapping (Bioform, 3D Master, Chromascope, Vita Classic, Bleach)
         const shadeConversion = {
+            // Vita Classic & 3D Master
             "A1": "A1", "A2": "A1", "A3": "A2", "A3.5": "A3", "A4": "A3.5",
             "B1": "B1", "B2": "B1", "B3": "B2", "B4": "B3",
             "C1": "C1", "C2": "C1", "C3": "C2", "C4": "C3",
             "D2": "B2", "D3": "A3", "D4": "A3",
             "OM1": "OM1", "OM2": "OM2", "OM3": "OM3",
+            // 3D Master Conversions
             "1M1": "B1", "1M2": "A1", "2L1.5": "A1", "2L2.5": "A2", "2M1": "A1",
-            "3L1.5": "B2", "3M1": "C1", "3M2": "B2", "3M3": "A3",
-            "4M1": "B2", "4M2": "A3", "5M1": "C2", "5M2": "A3.5",
-            // Chromascope
-            "01/110": "A1", "1A/120": "A2", "2A/130": "A2", "1C/140": "A3", 
-            "2B/210": "A3", "1D/220": "A3", "1E/230": "A3", "2C/240": "A3.5",
-            "3A/310": "B3", "5B/320": "B4", "2E/330": "B4", "3E/340": "A4",
-            // Bioform
-            "B51": "A1", "B52": "B2", "B53": "A2", "B54": "A3", "B55": "B3",
+            "3M1": "C1", "3M2": "D3", "3M3": "A3.5",
+            // Chromascope Conversions
+            "110": "A1", "120": "A1/A2", "130": "A2", "140": "A2",
+            "210": "A3", "220": "A3", "230": "A3.5",
+            // Bioform Conversions
+            "B51": "A1", "B52": "B2", "B53": "A2", "B54": "A3",
             "B69": "D4", "B77": "C2", "B81": "C3"
         };
 
-        // Mapping for Shade Categories (MT, LT, HT, MO, HO) based on Stump Shade Influence
+        // Stump Shade to Puck Shade conversion
+        const stumpShadeConversion = {
+            "ND1": "A1", "ND2": "A1", "ND3": "A2", "ND4": "A3",
+            "ND5": "A3.5", "ND6": "B1", "ND7": "B2", "ND8": "B3", "ND9": "C1"
+        };
+
+        // Shade Categories (MT, LT, HT, MO, HO) based on Stump Shade Influence
         const categoryMapping = {
             "A1": ["MTA1", "LTA1", "HTA1", "MO1", "HO1"],
             "A2": ["MTA2", "LTA2", "HTA2", "MO2", "HO1"],
@@ -89,15 +95,6 @@
             "B2": ["MTB2", "LTB2", "HTB2", "MO3", "HO1"],
             "D4": ["MTD4", "LTD4", "HTD4", "MO4", "HO3"],
             "OM1": ["MTBL1", "LTBL1", "HTBL1", "MO0", "HO0"]
-        };
-
-        // Stump Shade Influence (ND7, ND8, etc.)
-        const stumpShadeConversion = {
-            "ND7": "A1",
-            "ND8": "A2",
-            "ND9": "A3",
-            "ND10": "A3.5",
-            "ND11": "B1"
         };
 
         function displayShade() {
@@ -113,7 +110,7 @@
             let convertedGingival = shadeConversion[gingivalShade] || "";
             let convertedStump = stumpShadeConversion[stumpShade] || "";
 
-            // Determine the final shade (prioritizing incisal, then body, then gingival, then stump)
+            // Determine the final shade (priority: Incisal > Body > Gingival > Stump)
             let finalShade = convertedIncisal || convertedBody || convertedGingival || convertedStump || "No shade entered";
 
             // Find shade categories
