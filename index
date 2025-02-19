@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html>
 <head>
     <title>Emax Press Shade Conversion</title>
@@ -60,28 +60,32 @@
     <p>Shade Categories: <span id="categories"></span></p>
 
     <script>
-        // Mapping of Stump Shades to corresponding Puck Shades
+        // Stump Shade Mapping from Emax PDF
         const stumpShadeMapping = {
-            "ND1": "A1", "ND2": "A1", "ND3": "A2", "ND4": "A3", "ND5": "A3.5",
-            "ND6": "B1", "ND7": "B2", "ND8": "B3", "ND9": "C1",
+            "ND1": "A1", "ND2": "A2", "ND3": "A3", "ND4": "A3.5", "ND5": "B1",
+            "ND6": "B2", "ND7": "B3", "ND8": "C1", "ND9": "C2",
             "ST1": "A1", "ST2": "A2", "ST3": "A3", "ST4": "A3.5", "ST5": "B1",
             "ST6": "B2", "ST7": "B3", "ST8": "C1", "ST9": "C2"
         };
 
-        // Mapping of Material Types (MT, LT, HT, MO, HO) based on Stump Shade & Final Shade
+        // Material Types for Each Final Shade & Stump Shade from PDF
         const materialTypeMapping = {
             "A1": { "ND1": ["MTA1", "LTA1", "HTA1", "MO1", "HO1"], "ND2": ["MTA1", "LTA1", "HTA1", "MO1", "HO1"] },
             "A2": { "ND2": ["MTA2", "LTA2", "HTA2", "MO2", "HO1"], "ND3": ["MTA2", "LTA2", "HTA2", "MO2", "HO2"] },
             "A3": { "ND3": ["MTA3", "LTA3", "HTA3", "MO3", "HO2"], "ND4": ["MTA3", "LTA3", "HTA3", "MO3", "HO3"] },
             "A3.5": { "ND4": ["MTA3.5", "LTA3.5", "HTA3.5", "MO4", "HO3"], "ND5": ["MTA3.5", "LTA3.5", "HTA3.5", "MO4", "HO4"] },
-            "B1": { "ND6": ["MTB1", "LTB1", "HTB1", "MO1", "HO1"], "ND1": ["MTB1", "LTB1", "HTB1", "MO1", "HO1"] },
-            "B2": { "ND7": ["MTB2", "LTB2", "HTB2", "MO3", "HO2"], "ND2": ["MTB2", "LTB2", "HTB2", "MO3", "HO2"] },
-            "B3": { "ND8": ["MTB3", "LTB3", "HTB3", "MO3", "HO1"], "ND3": ["MTB3", "LTB3", "HTB3", "MO3", "HO1"] },
-            "C1": { "ND9": ["MTC1", "LTC1", "HTC1", "MO1", "HO1"], "ND4": ["MTC1", "LTC1", "HTC1", "MO1", "HO1"] }
+            "B1": { "ND5": ["MTB1", "LTB1", "HTB1", "MO1", "HO1"] },
+            "B2": { "ND6": ["MTB2", "LTB2", "HTB2", "MO3", "HO2"], "ND9": ["MTB2", "LTB2", "HTB2", "MO3", "HO2"] },
+            "B3": { "ND7": ["MTB3", "LTB3", "HTB3", "MO3", "HO1"] },
+            "C1": { "ND8": ["MTC1", "LTC1", "HTC1", "MO1", "HO1"], "ND4": ["MTC1", "LTC1", "HTC1", "MO1", "HO1"] },
+            "C2": { "ND9": ["MTC2", "LTC2", "HTC2", "MO2", "HO2"] },
+            "D2": { "ND3": ["MTD2", "LTD2", "HTD2", "MO2", "HO2"] },
+            "D3": { "ND5": ["MTD3", "LTD3", "HTD3", "MO3", "HO3"] },
+            "D4": { "ND7": ["MTD4", "LTD4", "HTD4", "MO4", "HO4"] }
         };
 
         function displayShade() {
-            // Get input values
+            // Get input values and format them correctly
             let incisalShade = document.getElementById("incisal").value.trim().toUpperCase();
             let bodyShade = document.getElementById("body").value.trim().toUpperCase();
             let gingivalShade = document.getElementById("gingival").value.trim().toUpperCase();
