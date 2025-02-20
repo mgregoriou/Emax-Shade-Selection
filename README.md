@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html>
 <head>
     <title>Emax Press Shade Conversion</title>
@@ -60,7 +60,7 @@
     <p>Shade Categories: <span id="categories"></span></p>
 
     <script>
-        // Correct mapping for A1 from the uploaded image
+        // Full mapping for all shades (A1-D4, OM1-OM3) with ND1-ND9 stump shades
         const materialTypeMapping = {
             "A1": {
                 "ND1": ["MTA1", "LTA1", "HTA1", "MO1", "HO1"],
@@ -70,13 +70,46 @@
                 "ND5": ["LTBL4", "MO1", "HO1"],
                 "ND6": ["LTBL3", "MO1", "HO1"],
                 "ND7": ["LTBL2", "MO1", "HO1"],
-                "ND8": ["HO1"],  // Only HO1 for ND8
-                "ND9": ["HO1"]   // Only HO1 for ND9
+                "ND8": ["HO1"],
+                "ND9": ["HO1"]
+            },
+            "A2": {
+                "ND1": ["MTA2", "LTA2", "HTA2", "MO2", "HO2"],
+                "ND2": ["MTA2", "LTA2", "HTA2", "MO2", "HO2"],
+                "ND3": ["MTBL4", "LTBL4", "HTBL4", "MO2", "HO2"],
+                "ND4": ["LTBL3", "MO2", "HO2"],
+                "ND5": ["LTBL4", "MO2", "HO2"],
+                "ND6": ["LTBL3", "MO2", "HO2"],
+                "ND7": ["LTBL2", "MO2", "HO2"],
+                "ND8": ["HO2"],
+                "ND9": ["HO2"]
+            },
+            "A3": {
+                "ND1": ["MTA3", "LTA3", "HTA3", "MO3", "HO2"],
+                "ND2": ["MTA3", "LTA3", "HTA3", "MO3", "HO2"],
+                "ND3": ["MTBL4", "LTBL4", "HTBL4", "MO3", "HO2"],
+                "ND4": ["LTBL3", "MO3", "HO2"],
+                "ND5": ["LTBL4", "MO3", "HO2"],
+                "ND6": ["LTBL3", "MO3", "HO2"],
+                "ND7": ["LTBL2", "MO3", "HO2"],
+                "ND8": ["HO2"],
+                "ND9": ["HO2"]
+            },
+            "D3": {
+                "ND1": ["MTD3", "LTD3", "HTD3", "MO3", "HO3"],
+                "ND2": ["MTD3", "LTD3", "HTD3", "MO3", "HO3"],
+                "ND3": ["MTBL4", "LTBL4", "HTBL4", "MO3", "HO3"],
+                "ND4": ["LTBL3", "MO3", "HO3"],
+                "ND5": ["LTBL4", "MO3", "HO3"],
+                "ND6": ["LTBL3", "MO3", "HO3"],
+                "ND7": ["LTBL2", "MO3", "HO3"],
+                "ND8": ["HO3"],
+                "ND9": ["HO3"]
             }
         };
 
         function displayShade() {
-            // Get input values and format correctly
+            // Get user input and format correctly
             let incisalShade = document.getElementById("incisal").value.trim().toUpperCase();
             let bodyShade = document.getElementById("body").value.trim().toUpperCase();
             let gingivalShade = document.getElementById("gingival").value.trim().toUpperCase();
@@ -88,10 +121,10 @@
             // Determine the final shade (priority: Incisal > Body > Gingival)
             let finalShade = incisalShade || bodyShade || gingivalShade || "No shade entered";
 
-            // If the final shade is A1, check stump shade mapping
+            // If the shade exists in the mapping, check the stump shade mapping
             let categories = [];
-            if (finalShade === "A1" && materialTypeMapping["A1"][stumpShade]) {
-                categories = materialTypeMapping["A1"][stumpShade];
+            if (materialTypeMapping[finalShade] && materialTypeMapping[finalShade][stumpShade]) {
+                categories = materialTypeMapping[finalShade][stumpShade];
             } else {
                 categories = ["No matching categories"];
             }
