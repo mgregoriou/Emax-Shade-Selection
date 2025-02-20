@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html>
 <head>
     <title>Emax Press Shade Conversion</title>
@@ -60,28 +60,23 @@
     <p>Shade Categories: <span id="categories"></span></p>
 
     <script>
-        // Stump Shade Mapping (Ensuring all ND1-ND9 are included)
-        const stumpShadeMapping = {
-            "ND1": "A1", "ND2": "A2", "ND3": "A3", "ND4": "A3.5", "ND5": "B1",
-            "ND6": "B2", "ND7": "B3", "ND8": "C1", "ND9": "C2"
+        // Correct mapping for A1 from the uploaded image
+        const materialTypeMapping = {
+            "A1": {
+                "ND1": ["MTA1", "LTA1", "HTA1", "MO1", "HO1"],
+                "ND2": ["MTA1", "LTA1", "HTA1", "MO1", "HO1"],
+                "ND3": ["MTBL4", "LTBL4", "HTBL4", "MO1", "HO1"],
+                "ND4": ["LTBL3", "MO1", "HO1"],
+                "ND5": ["LTBL4", "MO1", "HO1"],
+                "ND6": ["LTBL3", "MO1", "HO1"],
+                "ND7": ["LTBL2", "MO1", "HO1"],
+                "ND8": ["HO1"],  // Only HO1 for ND8
+                "ND9": ["HO1"]   // Only HO1 for ND9
+            }
         };
 
-        // Full Material Type Mapping (Ensuring ALL stump shades map properly)
-        const materialTypeMapping = {};
-        const finalShades = ["A1", "A2", "A3", "A3.5", "A4", "B1", "B2", "B3", "B4", "C1", "C2", "C3", "C4", "D2", "D3", "D4", "OM1", "OM2", "OM3"];
-        const stumpShades = ["ND1", "ND2", "ND3", "ND4", "ND5", "ND6", "ND7", "ND8", "ND9"];
-        const materialTypes = ["MT", "LT", "HT", "MO", "HO"];
-
-        // Generate full mapping dynamically
-        finalShades.forEach(shade => {
-            materialTypeMapping[shade] = {};
-            stumpShades.forEach(stump => {
-                materialTypeMapping[shade][stump] = materialTypes.map(type => `${type}${shade}`);
-            });
-        });
-
         function displayShade() {
-            // Get input values and format them correctly
+            // Get input values and format correctly
             let incisalShade = document.getElementById("incisal").value.trim().toUpperCase();
             let bodyShade = document.getElementById("body").value.trim().toUpperCase();
             let gingivalShade = document.getElementById("gingival").value.trim().toUpperCase();
@@ -90,16 +85,16 @@
             // Remove extra spaces from stump shade input
             stumpShade = stumpShade.replace(/\s+/g, "");
 
-            // Convert Stump Shade to Puck Shade
-            let convertedStump = stumpShadeMapping[stumpShade] || "";
+            // Determine the final shade (priority: Incisal > Body > Gingival)
+            let finalShade = incisalShade || bodyShade || gingivalShade || "No shade entered";
 
-            // Determine the final shade (priority: Incisal > Body > Gingival > Stump)
-            let finalShade = incisalShade || bodyShade || gingivalShade || convertedStump || "No shade entered";
-
-            // Find matching Material Types based on Final Shade & Stump Shade
-            let categories = materialTypeMapping[finalShade] && materialTypeMapping[finalShade][stumpShade] 
-                ? materialTypeMapping[finalShade][stumpShade] 
-                : ["No matching categories"];
+            // If the final shade is A1, check stump shade mapping
+            let categories = [];
+            if (finalShade === "A1" && materialTypeMapping["A1"][stumpShade]) {
+                categories = materialTypeMapping["A1"][stumpShade];
+            } else {
+                categories = ["No matching categories"];
+            }
 
             // Display the selected shade and material types
             document.getElementById("output").innerText = finalShade;
