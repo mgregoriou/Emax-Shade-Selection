@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html>
 <head>
     <title>Emax Press Shade Conversion</title>
@@ -52,7 +52,7 @@
     <label>Incisal Shade (RX): <input type="text" id="incisal"></label><br>
     <label>Body/Mid Shade: <input type="text" id="body"></label><br>
     <label>Gingival Shade: <input type="text" id="gingival"></label><br>
-    <label>Stump Shade (ND1-ND9, ST1-ST9): <input type="text" id="stump"></label><br> <!-- Stump Shade Input -->
+    <label>Stump Shade (ND1-ND9, ST1-ST9): <input type="text" id="stump"></label><br>
     <button onclick="displayShade()">Submit</button>
 
     <!-- Output Section -->
@@ -60,7 +60,7 @@
     <p>Shade Categories: <span id="categories"></span></p>
 
     <script>
-        // Stump Shade Mapping from Emax PDF
+        // Stump Shade Mapping (from Emax Press PDF)
         const stumpShadeMapping = {
             "ND1": "A1", "ND2": "A2", "ND3": "A3", "ND4": "A3.5", "ND5": "B1",
             "ND6": "B2", "ND7": "B3", "ND8": "C1", "ND9": "C2",
@@ -68,7 +68,7 @@
             "ST6": "B2", "ST7": "B3", "ST8": "C1", "ST9": "C2"
         };
 
-        // Material Types for Each Final Shade & Stump Shade from PDF
+        // Material Types Mapping (MT, LT, HT, MO, HO) from the Emax Press PDF
         const materialTypeMapping = {
             "A1": { "ND1": ["MTA1", "LTA1", "HTA1", "MO1", "HO1"], "ND2": ["MTA1", "LTA1", "HTA1", "MO1", "HO1"] },
             "A2": { "ND2": ["MTA2", "LTA2", "HTA2", "MO2", "HO1"], "ND3": ["MTA2", "LTA2", "HTA2", "MO2", "HO2"] },
