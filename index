@@ -169,7 +169,7 @@
                 "ND5": ["MTB1", "LTC1", "HTBL3", "MO1", "HO1"],
                 "ND6": ["MTB1", "LTC1", "MO1", "HO1"],
                 "ND7": ["MTB1", "LTC1", "HTA1", "MO1", "HO1"],
-                "ND8": ["LTC1", "HTC1", HO1"],
+                "ND8": ["LTC1", "HTC1", "HO1"],
                 "ND9": ["HO1"]
             },
 "C2": {
@@ -180,7 +180,7 @@
                 "ND5": ["MTA2", "LTC1", "HTA1", "MO4", "HO2"],
                 "ND6": ["MTA2", "LTB2", "HTB1", "MO4", "HO2"],
                 "ND7": ["MTA3", "LTB2", "HTA3", "MO4", "HO2"],
-                "ND8": ["LTB2", "HTB2", HO2"],
+                "ND8": ["LTB2", "HTB2", "HO2"],
                 "ND9": ["HO2"]
             },
 "C3": {
@@ -191,7 +191,7 @@
                 "ND5": ["MTA3", "LTC2", "HTA3", "MO4", "HO2"],
                 "ND6": ["MTA3", "LTC2", "HTB2", "MO4", "HO2"],
                 "ND7": ["MTA3", "LTC2", "HTA3.5", "MO4", "HO2"],
-                "ND8": ["MTA3", "LTC2", "HTC2", HO2"],
+                "ND8": ["MTA3", "LTC2", "HTC2", "HO2"],
                 "ND9": ["HO2"]
             },
 "C4": {
@@ -202,7 +202,7 @@
                 "ND5": ["MTA3", "LTC3", "HTB3", "MO4", "HO2"],
                 "ND6": ["MTA3", "LTC3", "HTB3", "MO4", "HO2"],
                 "ND7": ["MTA3", "LTC3", "HTA4", "MO4", "HO2"],
-                "ND8": ["LTC3", "HTC3", HO2"],
+                "ND8": ["LTC3", "HTC3", "HO2"],
                 "ND9": ["HO2"]
             },
  "D2": {
@@ -213,7 +213,7 @@
                 "ND5": ["MTB1", "LTD2", "HTBL3", "MO4", "HO2"],
                 "ND6": ["MTB1", "LTD2", "HTBL2", "MO4", "HO2"],
                 "ND7": ["MTB1", "LTD2", "HTB1", "MO4", "HO2"],
-                "ND8": ["MTA1", "LTD2", "HTD2", HO2"],
+                "ND8": ["MTA1", "LTD2", "HTD2", "HO2"],
                 "ND9": ["HO2"]
             }
         };
@@ -223,9 +223,9 @@
                 "ND3": ["MTD2", "LTD2", "HTD2", "MO4", "HO2"],
                 "ND4": ["MTB2", "LTB2", "HTB1", "MO4", "HO2"],
                 "ND5": ["MTA2", "LTB2", "HTA2", "MO4", "HO2"],
-                "ND6": ["MTA2", LTB2", "HTBL2", "MO4", "HO2"],
+                "ND6": ["MTA2", "LTB2", "HTBL2", "MO4", "HO2"],
                 "ND7": ["MTA2", "LTB2", "HTBL2", "MO4", "HO2"],
-                "ND8": ["LTB2", "HTB2", HO2"],
+                "ND8": ["LTB2", "HTB2", "HO2"],
                 "ND9": ["HO2"]
             }
  "D4": {
@@ -236,8 +236,41 @@
                 "ND5": ["MTA2", "LTB2", "HTA2", "MO4", "HO2"],
                 "ND6": ["MTA2", LTB2", "HTBL2", "MO4", "HO2"],
                 "ND7": ["MTA2", "LTB2", "HTBL2", "MO4", "HO2"],
-                "ND8": ["LTB2", "HTB2", HO2"],
+                "ND8": ["LTB2", "HTB2", "HO2"],
                 "ND9": ["HO2"]
+            }
+"0M1": {
+                "ND1": ["LTBL1", "HTBL1", "MO0", "HO0"],
+                "ND2": ["MTBL1", "LBL12", "MO0", "HO0"],
+                "ND3": ["MO0", "HO0"],
+                "ND4": ["MO0", "HO0"],
+                "ND5": ["MO0", "HO0"],
+                "ND6": ["MO0", "HO0"],
+                "ND7": "MO0", "HO0"],
+                "ND8": ["HO0"],
+                "ND9": ["HO0"]
+            }
+"0M2": {
+                "ND1": ["MTBL2", "LTBL2", "HTBL2", "MO0", "HO0"],
+                "ND2": ["MTBL2", "LTBL2", "HTBL2", "MO0", "HO0"],
+                "ND3": ["LTBL1", "MO0", "HO0"],
+                "ND4": ["LTBL1","MO0", "HO0"],
+                "ND5": ["LTBL1", "MO0", "HO0"],
+                "ND6": ["LTBL1", "MO0", "HO0"],
+                "ND7": ["LTBL1","MO0", "HO0"],
+                "ND8": ["HO0"],
+                "ND9": ["HO0"]
+            }
+"0M3": {
+                "ND1": ["MTBL2", "LTBL3", "HTBL3", "MO0", "HO0"],
+                "ND2": ["MTBL2", "LTBL3", "HTBL3", "MO0", "HO0"],
+                "ND3": ["LTBL2", "MO0", "HO0"],
+                "ND4": ["LTBL2","MO0", "HO0"],
+                "ND5": ["LTBL2", "MO0", "HO0"],
+                "ND6": ["LTBL2", "MO0", "HO0"],
+                "ND7": ["LTBL2","MO0", "HO0"],
+                "ND8": ["HO0"],
+                "ND9": ["HO0"]
             }
         };
 
