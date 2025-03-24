@@ -90,7 +90,20 @@
 
   <label>Gingival: <input type="text" id="gingival" /></label><br> 
 
-  <label>Stump Shade (ND1-ND9): <input type="text" id="stump" /></label><br> 
+ <label>Stump Shade:
+  <select id="stump">
+    <option value="ND1">ND1</option>
+    <option value="ND2">ND2</option>
+    <option value="ND3" selected>ND3 (Default)</option>
+    <option value="ND4">ND4</option>
+    <option value="ND5">ND5</option>
+    <option value="ND6">ND6</option>
+    <option value="ND7">ND7</option>
+    <option value="ND8">ND8</option>
+    <option value="ND9">ND9</option>
+  </select>
+</label><br>
+
   <small style="display:block; margin-top:-5px; font-size: 0.9em; color: #555;">
   If there is no provided stump, please input <strong>ND3</strong>.
 </small>
