@@ -73,17 +73,107 @@
   <script>
     // Paste your full materialTypeMapping here (shortened here for demo)
     const materialTypeMapping = {
-      "A1": {
-        "ND1": ["MTA1", "LTA1", "HTA1", "MO1", "HO1"],
-        "ND2": ["MTA1", "LTA1", "HTA1", "MO1", "HO1"],
-        "ND3": ["MTBL4", "LTBL4", "HTBL4", "MO1", "HO1"],
-        "ND4": ["LTBL3", "MO1", "HO1"],
-        "ND5": ["LTBL4", "MO1", "HO1"],
-        "ND6": ["LTBL3", "MO1", "HO1"],
-        "ND7": ["LTBL2", "MO1", "HO1"],
-        "ND8": ["HO1"],
-        "ND9": ["HO1"]
-      },
+  "A1": {
+    "ND1": ["MTA1", "LTA1", "HTA1", "MO1", "HO1"],
+    "ND2": ["MTA1", "LTA1", "HTA1", "MO1", "HO1"],
+    "ND3": ["MTBL4", "LTBL4", "HTBL4", "MO1", "HO1"],
+    "ND4": ["LTBL3", "MO1", "HO1"],
+    "ND5": ["LTBL4", "MO1", "HO1"],
+    "ND6": ["LTBL3", "MO1", "HO1"],
+    "ND7": ["LTBL2", "MO1", "HO1"],
+    "ND8": ["HO1"],
+    "ND9": ["HO1"]
+  },
+  "A2": {
+    "ND1": ["MTA1", "LTA1", "HTA1", "MO1", "HO1"],
+    "ND2": ["MTA1", "LTA1", "HTA1", "MO1", "HO1"],
+    "ND3": ["MTA1", "LTA1", "HTBL4", "MO1", "HO1"],
+    "ND4": ["MTBL3", "LTA1", "MO1", "HO1"],
+    "ND5": ["LTA1", "HTBL2", "MO1", "HO1"],
+    "ND6": ["LTA1", "HTBL2", "MO1", "HO1"],
+    "ND7": ["LTA1", "MO1", "HO1"],
+    "ND8": ["HO1"],
+    "ND9": ["HO1"]
+  },
+  "A3": {
+    "ND1": ["MTA2", "LTA2", "HTA2", "MO2", "HO2"],
+    "ND2": ["MTA2", "LTA2", "HTA2", "MO2", "HO2"],
+    "ND3": ["MTA2", "LTA2", "HTA2", "MO2", "HO2"],
+    "ND4": ["MTA2", "LTA2", "MO2", "HO2"],
+    "ND5": ["MTA1", "LTA2", "HTBL3", "MO2", "HO2"],
+    "ND6": ["MTA1", "LTA2", "HTBL2", "MO2", "HO2"],
+    "ND7": ["MTBL2", "LTA2", "MO2", "HO2"],
+    "ND8": ["HO2"],
+    "ND9": ["HO2"]
+  },
+  "A3.5": {
+    "ND1": ["MTA3", "LTA3", "HTA3", "MO2", "HO2"],
+    "ND2": ["MTA3", "LTA2", "HTA3", "MO2", "HO2"],
+    "ND3": ["MTA2", "LTA3", "HTA3", "MO2", "HO2"],
+    "ND4": ["MTA2", "LTA3", "HTB3", "MO2", "HO2"],
+    "ND5": ["MTA2", "LTA3", "HTA3", "MO2", "HO2"],
+    "ND6": ["MTA2", "LTA3", "HTBL2", "MO2", "HO2"],
+    "ND7": ["LTA3", "MO2", "HO2"],
+    "ND8": ["LTA3", "HO2"],
+    "ND9": ["HO2"]
+  },
+  "A4": {
+    "ND1": ["MTA3.5", "LTA3.5", "HTA3.5", "MO4", "HO2"],
+    "ND2": ["MTA3.5", "LTA3.5", "HTA3.5", "MO4", "HO2"],
+    "ND3": ["MTA3", "LTA3.5", "HTA3.5", "MO4", "HO2"],
+    "ND4": ["MTA3", "LTA3.5", "HTB3", "MO4", "HO2"],
+    "ND5": ["MTA3", "LTA3.5", "HTA3.5", "MO4", "HO2"],
+    "ND6": ["MTA3", "LTA3.5", "HTA3", "MO4", "HO2"],
+    "ND7": ["MTA2", "LTA3.5", "MO4", "HO2"],
+    "ND8": ["LTA3.5", "HO2"],
+    "ND9": ["HO2"]
+  },
+  "B1": {
+    "ND1": ["MTB1", "LTB1", "HTB1", "MO1", "HO1"],
+    "ND2": ["MTB1", "LTB1", "HTBL4", "MO1", "HO1"],
+    "ND3": ["MTBL4", "LTB1", "HTBL3", "MO1", "HO1"],
+    "ND4": ["MTBL3", "LTBL3", "MO1", "HO1"],
+    "ND5": ["MTBL2", "LTBL3", "MO1", "HO1"],
+    "ND6": ["LTBL3", "MO1", "HO1"],
+    "ND7": ["LTBL3", "MO1", "HO1"],
+    "ND8": ["HO1"],
+    "ND9": ["HO1"]
+  },
+  "B2": {
+    "ND1": ["MTB1", "LTB1", "HTB1", "MO1", "HO1"],
+    "ND2": ["MTB1", "LTB1", "HTBL4", "MO1", "HO1"],
+    "ND3": ["MTB1", "LTB1", "HTBL3", "MO1", "HO1"],
+    "ND4": ["MTBL4", "LTBL3", "MO1", "HO1"],
+    "ND5": ["MTBL3", "LTB1", "HTBL2", "MO1", "HO1"],
+    "ND6": ["LTB1", "MO1", "HO1"],
+    "ND7": ["LTB1", "MO1", "HO1"],
+    "ND8": ["HO1"],
+    "ND9": ["HO1"]
+  },
+  "B3": {
+    "ND1": ["MTB2", "LTB2", "HTB2", "MO3", "HO1"],
+    "ND2": ["MTB2", "LTB2", "HTB2", "MO3", "HO1"],
+    "ND3": ["MTB2", "LTB2", "HTB2", "MO3", "HO1"],
+    "ND4": ["MTB1", "LTB2", "HTBL2", "MO3", "HO1"],
+    "ND5": ["MTBL4", "LTB2", "HTBL3", "MO3", "HO1"],
+    "ND6": ["MTBL4", "LTB2", "HTBL2", "MO3", "HO1"],
+    "ND7": ["LTB2", "HTBL1", "MO3", "HO1"],
+    "ND8": ["HO1"],
+    "ND9": ["HO1"]
+  },
+  "B4": {
+    "ND1": ["MTA3.5", "LTB3", "HTB3", "MO3", "HO1"],
+    "ND2": ["MTA3.5", "LTB3", "HTB3", "MO3", "HO1"],
+    "ND3": ["MTA3", "LTB3", "HTB2", "MO3", "HO1"],
+    "ND4": ["MTB2", "LTB3", "HTBL3", "MO3", "HO1"],
+    "ND5": ["MTBL4", "LTB3", "HTBL3", "MO3", "HO1"],
+    "ND6": ["LTB3", "HTBL1", "MO3", "HO1"],
+    "ND7": ["LTB2", "HTB2", "MO3", "HO1"],
+    "ND8": ["LTB2", "HTB2", "HO1"],
+    "ND9": ["HO1"]
+  }
+};
+
       // ... rest of your full map continues here ...
     };
 
