@@ -77,6 +77,7 @@
  <!-- Logo -->
 <img src="OIP.jpeg" alt="Company Logo" onerror="this.onerror=null; this.src='default-logo.png';">
 
+
   <h1>Emax Press Shade Converter</h1> 
 
   
@@ -89,7 +90,20 @@
 
   <label>Gingival: <input type="text" id="gingival" /></label><br> 
 
-  <label>Stump Shade (ND1-ND9): <input type="text" id="stump" /></label><br> 
+ <label>Stump Shade:
+  <select id="stump">
+    <option value="ND1">ND1</option>
+    <option value="ND2">ND2</option>
+    <option value="ND3" selected>ND3 (Default)</option>
+    <option value="ND4">ND4</option>
+    <option value="ND5">ND5</option>
+    <option value="ND6">ND6</option>
+    <option value="ND7">ND7</option>
+    <option value="ND8">ND8</option>
+    <option value="ND9">ND9</option>
+  </select>
+</label><br>
+
   <small style="display:block; margin-top:-5px; font-size: 0.9em; color: #555;">
   If there is no provided stump, please input <strong>ND3</strong>.
 </small>
@@ -532,8 +546,7 @@
 
           }; 
 
-  
-const shadeAliasMapping = {
+  const shadeAliasMapping = {
   "A1": "A1", "A2": "A2", "A3": "A3", "A3.5": "A3.5", "A4": "A4", 
   "B1": "B1", "B2": "B2", "B3": "B3", "B4": "B4",
   "C1": "C1", "C2": "C2", "C3": "C3", "C4": "C4",
@@ -559,19 +572,26 @@ const shadeAliasMapping = {
   "B91": "C1", "B92": "D2", "B94": "C2", "B95": "C2", "B96": "C4"
 };
 
+
     function convertShade() { 
 
-      const incisal = document.getElementById("incisal").value.trim().toUpperCase(); 
+   const incisal = document.getElementById("incisal").value.trim().toUpperCase();
+const body = document.getElementById("body").value.trim().toUpperCase();
+const gingival = document.getElementById("gingival").value.trim().toUpperCase();
+const stump = document.getElementById("stump").value.trim().toUpperCase();
 
-      const body = document.getElementById("body").value.trim().toUpperCase(); 
+// Normalize base shades like OM1 to 0M1
+function normalizeShade(shade) {
+  if (/^OM\d$/i.test(shade)) {
+    return '0' + shade.slice(1).toUpperCase();
+  }
+  return shade;
+}
 
-      const gingival = document.getElementById("gingival").value.trim().toUpperCase(); 
+const baseShadeRaw = incisal || body || gingival;
+const normalizedRaw = normalizeShade(baseShadeRaw);
+const baseShade = shadeAliasMapping[normalizedRaw] || normalizedRaw;
 
-      const stump = document.getElementById("stump").value.trim().toUpperCase(); 
-
-  
-
-      const baseShade = incisal || body || gingival; 
 
       const resultDiv = document.getElementById("results"); 
 
