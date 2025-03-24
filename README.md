@@ -90,6 +90,9 @@
   <label>Gingival: <input type="text" id="gingival" /></label><br> 
 
   <label>Stump Shade (ND1-ND9): <input type="text" id="stump" /></label><br> 
+  <small style="display:block; margin-top:-5px; font-size: 0.9em; color: #555;">
+  If there is no provided stump, please input <strong>ND3</strong>.
+</small>
 
   
 
