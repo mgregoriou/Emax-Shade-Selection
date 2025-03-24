@@ -1,324 +1,573 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Emax Press Shade Conversion</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 20px;
-    }
-    img {
-      width: 500px;
-      margin-bottom: 10px;
-    }
-    h1 {
-      font-size: 24px;
-    }
-    h3 {
-      font-size: 16px;
-      color: gray;
-    }
-    input {
-      margin: 5px;
-      padding: 5px;
-      text-transform: uppercase;
-    }
-    button {
-      padding: 8px 12px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-    p {
-      font-weight: bold;
-      margin-top: 15px;
-    }
-  </style>
-</head>
-<body>
+<!DOCTYPE html> 
 
-  <!-- Logo -->
-  <img src="OIP.jpg" alt="Company Logo" onerror="this.onerror=null; this.src='default-logo.png';">
-  <h1>Emax Press Shade Conversion</h1>
-  <h3>Please input all shades provided on the prescription.</h3>
+<html lang="en"> 
 
-  <!-- Form Inputs -->
-  <label>Incisal Shade (RX): <input type="text" id="incisal"></label><br>
-  <label>Body/Mid Shade: <input type="text" id="body"></label><br>
-  <label>Gingival Shade: <input type="text" id="gingival"></label><br>
-  <label>Stump Shade (ND1–ND9): <input type="text" id="stump"></label><br>
-  <button onclick="displayShade()">Submit</button>
+<head> 
 
-  <!-- Output -->
-  <p>Selected Shade: <span id="output"></span></p>
-  <p>Shade Categories: <span id="categories"></span></p>
+  <meta charset="UTF-8" /> 
 
-  <script>
-    const shadeConversion = {
-      "OM1": "OM1", "OM2": "OM2", "OM3": "OM3", "1M1": "OM3", "1M2": "A1",
-      "2L1.5": "B1", "2L2.5": "A2", "2M1": "A1", "2M2": "A2", "2M3": "A3",
-      "2R1.5": "A1", "2R2.5": "A3", "3L1.5": "C2", "3L2.5": "B3", "3M1": "C1",
-      "3M2": "D3", "3M3": "A3.5", "3R1.5": "D2", "3R2.5": "A3.5", "4L1.5": "C3",
-      "4L2.5": "A3.5", "4M1": "D3", "4M2": "A3.5", "4M3": "A4", "4R1.5": "D3",
-      "4R2.5": "A4", "5M1": "D3", "5M2": "A4", "5M3": "A4", "01/110": "A1",
-      "1A/120": "A2", "2A/130": "A2", "1C/140": "A3", "2B/210": "A3",
-      "1D/220": "A3", "1E/230": "A3", "2C/240": "A3.5", "3A/310": "B3",
-      "5B/320": "B4", "2E/330": "B4", "3E/340": "A4", "4A/410": "D3",
-      "6B/420": "C2", "4B/430": "C2", "6C/440": "C2", "6D/510": "C3",
-      "4C/520": "C3", "3C/530": "C3", "4D/540": "A4", "010": "OM1",
-      "020": "OM2", "030": "OM3", "040": "OM3", "BL1": "OM1", "BL2": "OM2",
-      "BL3": "OM3", "BL4": "OM3", "B51": "A1", "B52": "B2", "B53": "A2",
-      "B54": "A3", "B55": "B3", "B56": "A3", "B59": "A1", "B62": "A1",
-      "B63": "A2", "B65": "A3", "B66": "A2", "B67": "B3", "B69": "D4",
-      "B77": "C2", "B81": "C3", "B83": "A3.5", "B84": "A4", "B85": "B4",
-      "B91": "C1", "B92": "D2", "B94": "C2", "B95": "C2", "B96": "C4"
-    };
+  <title>Emax Press Shade Converter</title> 
 
-    const materialTypeMapping = {
-            "A1": {
-                "ND1": ["MTA1", "LTA1", "HTA1", "MO1", "HO1"],
-                "ND2": ["MTA1", "LTA1", "HTA1", "MO1", "HO1"],
-                "ND3": ["MTBL4", "LTBL4", "HTBL4", "MO1", "HO1"],
-                "ND4": ["LTBL3", "MO1", "HO1"],
-                "ND5": ["LTBL4", "MO1", "HO1"],
-                "ND6": ["LTBL3", "MO1", "HO1"],
-                "ND7": ["LTBL2", "MO1", "HO1"],
-                "ND8": ["HO1"],
-                "ND9": ["HO1"]
-            },
-            "A2": {
-                "ND1": ["MTA1", "LTA1", "HTA1", "MO1", "HO1"],
-                "ND2": ["MTA1", "LTA1", "HTA1", "MO1", "HO1"],
-                "ND3": ["MTA1", "LTA1", "HTBL4", "MO1", "HO1"],
-                "ND4": ["MTBL3", "LTA1", "MO1", "HO1"],
-                "ND5": ["LTA1", "HTBL2", "MO1", "HO1"],
-                "ND6": ["LTA1", "HTBL2", "MO1", "HO1"],
-                "ND7": ["LTA1", "MO1", "HO1"],
-                "ND8": ["HO1"],
-                "ND9": ["HO1"]
-            },
-            "A3": {
-                "ND1": ["MTA2", "LTA2", "HTA2", "MO2", "HO2"],
-                "ND2": ["MTA2", "LTA2", "HTA2", "MO2", "HO2"],
-                "ND3": ["MTA2", "LTA2", "HTA2", "MO2", "HO2"],
-                "ND4": ["MTA2", "LTA2", "MO2", "HO2"],
-                "ND5": ["MTA1", "LTA2", "HTBL3", "MO2", "HO2"],
-                "ND6": ["MTA1", "LTA2", "HTBL2", "MO2", "HO2"],
-                "ND7": ["MTBL2", "LTA2", "MO2", "HO2"],
-                "ND8": ["HO2"],
-                "ND9": ["HO2"]
-            },
-"A3.5": {
-                "ND1": ["MTA3", "LTA3", "HTA3", "MO2", "HO2"],
-                "ND2": ["MTA3", "LTA2", "HTA3", "MO2", "HO2"],
-                "ND3": ["MTA2", "LTA3", "HTA3", "MO2", "HO2"],
-                "ND4": ["MTA2", "LTA3", "HTB3", "MO2", "HO2"],
-                "ND5": ["MTA2", "LTA3", "HTA3", "MO2", "HO2"],
-                "ND6": ["MTA2", "LTA3", "HTBL2", "MO2", "HO2"],
-                "ND7": ["LTA3", "MO2", "HO2"],
-                "ND8": ["LTA3", "HO2"],
-                "ND9": ["HO2"]
-            },
-"A4": {
-                "ND1": ["MTA3.5", "LTA3.5", "HTA3.5", "MO4", "HO2"],
-                "ND2": ["MTA3.5", "LTA3.5", "HTA3.5", "MO4", "HO2"],
-                "ND3": ["MTA3", "LTA3.5", "HTA3.5", "MO4", "HO2"],
-                "ND4": ["MTA3", "LTA3.5", "HTB3", "MO4", "HO2"],
-                "ND5": ["MTA3", "LTA3.5", "HTA3.5", "MO4", "HO2"],
-                "ND6": ["MTA3", "LTA3.5", "HTA3", "MO4", "HO2"],
-                "ND7": ["MTA2", "LTA3.5", "MO4", "HO2"],
-                "ND8": ["LTA3.5", "HO2"],
-                "ND9": ["HO2"]
-            },
-"B1": {
-                "ND1": ["MTB1", "LTB1", "HTB1", "MO1", "HO1"],
-                "ND2": ["MTB1", "LTB1", "HTBL4", "MO1", "HO1"],
-                "ND3": ["MTBL4", "LTB1", "HTBL3", "MO1", "HO1"],
-                "ND4": ["MTBL3", "LTBL3", "MO1", "HO1"],
-                "ND5": ["MTBL2", "LTBL3", "MO1", "HO1"],
-                "ND6": ["LTBL3", "MO1", "HO1"],
-                "ND7": ["LTBL3", "MO1", "HO1"],
-                "ND8": ["HO1"],
-                "ND9": ["HO1"]
-            },
-"B2": {
-                "ND1": ["MTB1", "LTB1", "HTB1", "MO1", "HO1"],
-                "ND2": ["MTB1", "LTB1", "HTBL4", "MO1", "HO1"],
-                "ND3": ["MTB1", "LTB1", "HTBL3", "MO1", "HO1"],
-                "ND4": ["MTBL4", "LTBL3", "MO1", "HO1"],
-                "ND5": ["MTBL3", "LTB1", "HTBL2", "MO1", "HO1"],
-                "ND6": ["LTB1", "MO1", "HO1"],
-                "ND7": ["LTB1", "MO1", "HO1"],
-                "ND8": ["HO1"],
-                "ND9": ["HO1"]
-            },
-"B3": {
-                "ND1": ["MTB2", "LTB2", "HTB2", "MO3", "HO1"],
-                "ND2": ["MTB2", "LTB2", "HTB2", "MO3", "HO1"],
-                "ND3": ["MTB2", "LTB2", "HTB2", "MO3", "HO1"],
-                "ND4": ["MTB1", "LTB2", "HTBL2", "MO3", "HO1"],
-                "ND5": ["MTBL4", "LTB2", "HTBL3", "MO3", "HO1"],
-                "ND6": ["MTBL4", "LTB2", "HTBL2", "MO3", "HO1"],
-                "ND7": ["LTB2", "HTBL1", "MO3", "HO1"],
-                "ND8": ["HO1"],
-                "ND9": ["HO1"]
-            },
-"B4": {
-                "ND1": ["MTA3.5", "LTB3", "HTB3", "MO3", "HO1"],
-                "ND2": ["MTA3.5", "LTB3", "HTB3", "MO3", "HO1"],
-                "ND3": ["MTA3", "LTB3", "HTB2", "MO3", "HO1"],
-                "ND4": ["MTB2", "LTB3", "HTBL3", "MO3", "HO1"],
-                "ND5": ["MTBL4", "LTB3", "HTBL3", "MO3", "HO1"],
-                "ND6": ["LTB3", "HTBL1", "MO3", "HO1"],
-                "ND7": ["LTB2", "HTB2", "MO3", "HO1"],
-                "ND8": ["LTB2", "HTB2", "HO1"],
-                "ND9": ["HO1"]
-            },
-"C1": {
-                "ND1": ["MTC1", "LTC1", "HTC1", "MO1", "HO1"],
-                "ND2": ["MTC1", "LTC1", "HTC1", "MO1", "HO1"],
-                "ND3": ["MTC1", "LTC1", "HTBL4", "MO1", "HO1"],
-                "ND4": ["MTB1", "LTC1", "HTBL3", "MO1", "HO1"],
-                "ND5": ["MTB1", "LTC1", "HTBL3", "MO1", "HO1"],
-                "ND6": ["MTB1", "LTC1", "MO1", "HO1"],
-                "ND7": ["MTB1", "LTC1", "HTA1", "MO1", "HO1"],
-                "ND8": ["LTC1", "HTC1", "HO1"],
-                "ND9": ["HO1"]
-            },
-"C2": {
-                "ND1": ["MTC1", "LTC1", "HTC1", "MO4", "HO2"],
-                "ND2": ["MTC1", "LTC1", "HTC1", "MO4", "HO2"],
-                "ND3": ["MTC1", "LTC1", "HTBL4", "MO4", "HO2"],
-                "ND4": ["MTC1", "LTC1", "HTB1", "MO4", "HO2"],
-                "ND5": ["MTA2", "LTC1", "HTA1", "MO4", "HO2"],
-                "ND6": ["MTA2", "LTB2", "HTB1", "MO4", "HO2"],
-                "ND7": ["MTA3", "LTB2", "HTA3", "MO4", "HO2"],
-                "ND8": ["LTB2", "HTB2", "HO2"],
-                "ND9": ["HO2"]
-            },
-"C3": {
-                "ND1": ["MTC2", "LTC2", "HTC2", "MO4", "HO2"],
-                "ND2": ["MTC2", "LTC2", "HTC2", "MO4", "HO2"],
-                "ND3": ["MTC2", "LTC2", "HTC2", "MO4", "HO2"],
-                "ND4": ["MTA3", "LTC2", "HTB3", "MO4", "HO2"],
-                "ND5": ["MTA3", "LTC2", "HTA3", "MO4", "HO2"],
-                "ND6": ["MTA3", "LTC2", "HTB2", "MO4", "HO2"],
-                "ND7": ["MTA3", "LTC2", "HTA3.5", "MO4", "HO2"],
-                "ND8": ["MTA3", "LTC2", "HTC2", "HO2"],
-                "ND9": ["HO2"]
-            },
-"C4": {
-                "ND1": ["MTA3.5", "LTC3", "HTC3", "MO4", "HO2"],
-                "ND2": ["MTA3.5", "LTC3", "HTC3", "MO4", "HO2"],
-                "ND3": ["MTA3", "LTC3", "HTB4", "MO4", "HO2"],
-                "ND4": ["MTA3", "LTC3", "HTC2", "MO4", "HO2"],
-                "ND5": ["MTA3", "LTC3", "HTB3", "MO4", "HO2"],
-                "ND6": ["MTA3", "LTC3", "HTB3", "MO4", "HO2"],
-                "ND7": ["MTA3", "LTC3", "HTA4", "MO4", "HO2"],
-                "ND8": ["LTC3", "HTC3", "HO2"],
-                "ND9": ["HO2"]
-            },
- "D2": {
-                "ND1": ["MTD2", "LTD2", "HTD2", "MO4", "HO2"],
-                "ND2": ["MTD2", "LTD2", "HTD2", "MO4", "HO2"],
-                "ND3": ["MTD2", "LTD2", "HTB1", "MO4", "HO2"],
-                "ND4": ["MTB1", "LTD2", "HTBL3", "MO4", "HO2"],
-                "ND5": ["MTB1", "LTD2", "HTBL3", "MO4", "HO2"],
-                "ND6": ["MTB1", "LTD2", "HTBL2", "MO4", "HO2"],
-                "ND7": ["MTB1", "LTD2", "HTB1", "MO4", "HO2"],
-                "ND8": ["MTA1", "LTD2", "HTD2", "HO2"],
-                "ND9": ["HO2"]
-            },
-        
-            "D3": {
-                "ND1": ["MTD2", "LTD2", "HTD2", "MO4", "HO2"],
-                "ND2": ["MTD2", "LTD2", "HTD2", "MO4", "HO2"],
-                "ND3": ["MTD2", "LTD2", "HTD2", "MO4", "HO2"],
-                "ND4": ["MTB2", "LTB2", "HTB1", "MO4", "HO2"],
-                "ND5": ["MTA2", "LTB2", "HTA2", "MO4", "HO2"],
-                "ND6": ["MTA2", "LTB2", "HTBL2", "MO4", "HO2"],
-                "ND7": ["MTA2", "LTB2", "HTBL2", "MO4", "HO2"],
-                "ND8": ["LTB2", "HTB2", "HO2"],
-                "ND9": ["HO2"]
-            },
- "D4": {
-                "ND1": ["MTD2", "LTD2", "HTD2", "MO4", "HO2"],
-                "ND2": ["MTD2", "LTD2", "HTD2", "MO4", "HO2"],
-                "ND3": ["MTD2", "LTD2", "HTD2", "MO4", "HO2"],
-                "ND4": ["MTB2", "LTB2", "HTB1", "MO4", "HO2"],
-                "ND5": ["MTA2", "LTB2", "HTA2", "MO4", "HO2"],
-                "ND6": ["MTA2", LTB2", "HTBL2", "MO4", "HO2"],
-                "ND7": ["MTA2", "LTB2", "HTBL2", "MO4", "HO2"],
-                "ND8": ["LTB2", "HTB2", "HO2"],
-                "ND9": ["HO2"]
-            },
-"0M1": {
-                "ND1": ["LTBL1", "HTBL1", "MO0", "HO0"],
-                "ND2": ["MTBL1", "LBL12", "MO0", "HO0"],
-                "ND3": ["MO0", "HO0"],
-                "ND4": ["MO0", "HO0"],
-                "ND5": ["MO0", "HO0"],
-                "ND6": ["MO0", "HO0"],
-                "ND7": ["MO0", "HO0"],
-                "ND8": ["HO0"],
-                "ND9": ["HO0"]
-            },
-"0M2": {
-                "ND1": ["MTBL2", "LTBL2", "HTBL2", "MO0", "HO0"],
-                "ND2": ["MTBL2", "LTBL2", "HTBL2", "MO0", "HO0"],
-                "ND3": ["LTBL1", "MO0", "HO0"],
-                "ND4": ["LTBL1","MO0", "HO0"],
-                "ND5": ["LTBL1", "MO0", "HO0"],
-                "ND6": ["LTBL1", "MO0", "HO0"],
-                "ND7": ["LTBL1","MO0", "HO0"],
-                "ND8": ["HO0"],
-                "ND9": ["HO0"]
-            },
-"0M3": {
-                "ND1": ["MTBL2", "LTBL3", "HTBL3", "MO0", "HO0"],
-                "ND2": ["MTBL2", "LTBL3", "HTBL3", "MO0", "HO0"],
-                "ND3": ["LTBL2", "MO0", "HO0"],
-                "ND4": ["LTBL2","MO0", "HO0"],
-                "ND5": ["LTBL2", "MO0", "HO0"],
-                "ND6": ["LTBL2", "MO0", "HO0"],
-                "ND7": ["LTBL2","MO0", "HO0"],
-                "ND8": ["HO0"],
-                "ND9": ["HO0"]
-            }
-        };
+  <style> 
 
-        function displayShade() {
-            // Get user input and format correctly
-            let incisalShade = document.getElementById("incisal").value.trim().toUpperCase();
-            let bodyShade = document.getElementById("body").value.trim().toUpperCase();
-            let gingivalShade = document.getElementById("gingival").value.trim().toUpperCase();
-            let stumpShade = document.getElementById("stump").value.trim().toUpperCase();
+    body { 
 
-            // Remove extra spaces from stump shade input
-            stumpShade = stumpShade.replace(/\s+/g, "");
+      font-family: Arial, sans-serif; 
 
-            // Determine the final shade (priority: Incisal > Body > Gingival)
-            let finalShade = incisalShade || bodyShade || gingivalShade || "No shade entered";
+      text-align: center; 
 
-            // If the shade exists in the mapping, check the stump shade mapping
-            let categories = [];
-            if (materialTypeMapping[finalShade] && materialTypeMapping[finalShade][stumpShade]) {
-                categories = materialTypeMapping[finalShade][stumpShade];
-            } else {
-                categories = ["No matching categories"];
-            }
+      padding: 20px; 
 
-            // Display the selected shade and material types
-            document.getElementById("output").innerText = finalShade;
-            document.getElementById("categories").innerText = categories.join(", ");
-        }
-    </script>
+    } 
 
-</body>
-</html>
+    img { 
+
+      width: 300px; 
+
+      margin-bottom: 10px; 
+
+    } 
+
+    input { 
+
+      margin: 5px; 
+
+      padding: 5px; 
+
+      text-transform: uppercase; 
+
+    } 
+
+    button { 
+
+      padding: 8px 16px; 
+
+      background-color: #007bff; 
+
+      color: white; 
+
+      border: none; 
+
+      cursor: pointer; 
+
+    } 
+
+    button:hover { 
+
+      background-color: #0056b3; 
+
+    } 
+
+    #results { 
+
+      margin-top: 20px; 
+
+      font-weight: bold; 
+
+    } 
+
+  </style> 
+
+</head> 
+
+<body> 
+
+  
+
+  <!-- Company Logo --> 
+
+  <img src="OIP.jpg" alt="Company Logo" onerror="this.onerror=null; this.src='https://can01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fvia.placeholder.com%2F300x100%3Ftext%3DLogo&data=05%7C02%7Cmgregoriou%40shawlabgroup.com%7Ccd8233cd280a4f385d5908dd6acfa5a9%7C63342b85dd884bd78de212236c4bda87%7C0%7C1%7C638784162276320428%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C60000%7C%7C%7C&sdata=n4nx68WHBANzRgNY9scCJvkv0uTZrrn%2FOUav6hk%2FQ0c%3D&reserved=0';"> 
+
+  <h1>Emax Press Shade Converter</h1> 
+
+  
+
+  <!-- Inputs --> 
+
+  <label>Incisal: <input type="text" id="incisal" /></label><br> 
+
+  <label>Body: <input type="text" id="body" /></label><br> 
+
+  <label>Gingival: <input type="text" id="gingival" /></label><br> 
+
+  <label>Stump Shade (ND1-ND9): <input type="text" id="stump" /></label><br> 
+
+  
+
+  <button onclick="convertShade()">Convert</button> 
+
+  
+
+  <div id="results"></div> 
+
+  
+
+  <script> 
+
+    const materialTypeMapping = { 
+
+ 
+
+            "A1": { 
+
+                "ND1": ["MTA1", "LTA1", "HTA1", "MO1", "HO1"], 
+
+                "ND2": ["MTA1", "LTA1", "HTA1", "MO1", "HO1"], 
+
+                "ND3": ["MTBL4", "LTBL4", "HTBL4", "MO1", "HO1"], 
+
+                "ND4": ["LTBL3", "MO1", "HO1"], 
+
+                "ND5": ["LTBL4", "MO1", "HO1"], 
+
+                "ND6": ["LTBL3", "MO1", "HO1"], 
+
+                "ND7": ["LTBL2", "MO1", "HO1"], 
+
+                "ND8": ["HO1"], 
+
+                "ND9": ["HO1"] 
+
+            }, 
+
+            "A2": { 
+
+                "ND1": ["MTA1", "LTA1", "HTA1", "MO1", "HO1"], 
+
+                "ND2": ["MTA1", "LTA1", "HTA1", "MO1", "HO1"], 
+
+                "ND3": ["MTA1", "LTA1", "HTBL4", "MO1", "HO1"], 
+
+                "ND4": ["MTBL3", "LTA1", "MO1", "HO1"], 
+
+                "ND5": ["LTA1", "HTBL2", "MO1", "HO1"], 
+
+                "ND6": ["LTA1", "HTBL2", "MO1", "HO1"], 
+
+                "ND7": ["LTA1", "MO1", "HO1"], 
+
+                "ND8": ["HO1"], 
+
+                "ND9": ["HO1"] 
+
+            }, 
+
+            "A3": { 
+
+                "ND1": ["MTA2", "LTA2", "HTA2", "MO2", "HO2"], 
+
+                "ND2": ["MTA2", "LTA2", "HTA2", "MO2", "HO2"], 
+
+                "ND3": ["MTA2", "LTA2", "HTA2", "MO2", "HO2"], 
+
+                "ND4": ["MTA2", "LTA2", "MO2", "HO2"], 
+
+                "ND5": ["MTA1", "LTA2", "HTBL3", "MO2", "HO2"], 
+
+                "ND6": ["MTA1", "LTA2", "HTBL2", "MO2", "HO2"], 
+
+                "ND7": ["MTBL2", "LTA2", "MO2", "HO2"], 
+
+                "ND8": ["HO2"], 
+
+                "ND9": ["HO2"] 
+
+            }, 
+
+"A3.5": { 
+
+                "ND1": ["MTA3", "LTA3", "HTA3", "MO2", "HO2"], 
+
+                "ND2": ["MTA3", "LTA2", "HTA3", "MO2", "HO2"], 
+
+                "ND3": ["MTA2", "LTA3", "HTA3", "MO2", "HO2"], 
+
+                "ND4": ["MTA2", "LTA3", "HTB3", "MO2", "HO2"], 
+
+                "ND5": ["MTA2", "LTA3", "HTA3", "MO2", "HO2"], 
+
+                "ND6": ["MTA2", "LTA3", "HTBL2", "MO2", "HO2"], 
+
+                "ND7": ["LTA3", "MO2", "HO2"], 
+
+                "ND8": ["LTA3", "HO2"], 
+
+                "ND9": ["HO2"] 
+
+            }, 
+
+"A4": { 
+
+                "ND1": ["MTA3.5", "LTA3.5", "HTA3.5", "MO4", "HO2"], 
+
+                "ND2": ["MTA3.5", "LTA3.5", "HTA3.5", "MO4", "HO2"], 
+
+                "ND3": ["MTA3", "LTA3.5", "HTA3.5", "MO4", "HO2"], 
+
+                "ND4": ["MTA3", "LTA3.5", "HTB3", "MO4", "HO2"], 
+
+                "ND5": ["MTA3", "LTA3.5", "HTA3.5", "MO4", "HO2"], 
+
+                "ND6": ["MTA3", "LTA3.5", "HTA3", "MO4", "HO2"], 
+
+                "ND7": ["MTA2", "LTA3.5", "MO4", "HO2"], 
+
+                "ND8": ["LTA3.5", "HO2"], 
+
+                "ND9": ["HO2"] 
+
+            }, 
+
+"B1": { 
+
+                "ND1": ["MTB1", "LTB1", "HTB1", "MO1", "HO1"], 
+
+                "ND2": ["MTB1", "LTB1", "HTBL4", "MO1", "HO1"], 
+
+                "ND3": ["MTBL4", "LTB1", "HTBL3", "MO1", "HO1"], 
+
+                "ND4": ["MTBL3", "LTBL3", "MO1", "HO1"], 
+
+                "ND5": ["MTBL2", "LTBL3", "MO1", "HO1"], 
+
+                "ND6": ["LTBL3", "MO1", "HO1"], 
+
+                "ND7": ["LTBL3", "MO1", "HO1"], 
+
+                "ND8": ["HO1"], 
+
+                "ND9": ["HO1"] 
+
+            }, 
+
+"B2": { 
+
+                "ND1": ["MTB1", "LTB1", "HTB1", "MO1", "HO1"], 
+
+                "ND2": ["MTB1", "LTB1", "HTBL4", "MO1", "HO1"], 
+
+                "ND3": ["MTB1", "LTB1", "HTBL3", "MO1", "HO1"], 
+
+                "ND4": ["MTBL4", "LTBL3", "MO1", "HO1"], 
+
+                "ND5": ["MTBL3", "LTB1", "HTBL2", "MO1", "HO1"], 
+
+                "ND6": ["LTB1", "MO1", "HO1"], 
+
+                "ND7": ["LTB1", "MO1", "HO1"], 
+
+                "ND8": ["HO1"], 
+
+                "ND9": ["HO1"] 
+
+            }, 
+
+"B3": { 
+
+                "ND1": ["MTB2", "LTB2", "HTB2", "MO3", "HO1"], 
+
+                "ND2": ["MTB2", "LTB2", "HTB2", "MO3", "HO1"], 
+
+                "ND3": ["MTB2", "LTB2", "HTB2", "MO3", "HO1"], 
+
+                "ND4": ["MTB1", "LTB2", "HTBL2", "MO3", "HO1"], 
+
+                "ND5": ["MTBL4", "LTB2", "HTBL3", "MO3", "HO1"], 
+
+                "ND6": ["MTBL4", "LTB2", "HTBL2", "MO3", "HO1"], 
+
+                "ND7": ["LTB2", "HTBL1", "MO3", "HO1"], 
+
+                "ND8": ["HO1"], 
+
+                "ND9": ["HO1"] 
+
+            }, 
+
+"B4": { 
+
+                "ND1": ["MTA3.5", "LTB3", "HTB3", "MO3", "HO1"], 
+
+                "ND2": ["MTA3.5", "LTB3", "HTB3", "MO3", "HO1"], 
+
+                "ND3": ["MTA3", "LTB3", "HTB2", "MO3", "HO1"], 
+
+                "ND4": ["MTB2", "LTB3", "HTBL3", "MO3", "HO1"], 
+
+                "ND5": ["MTBL4", "LTB3", "HTBL3", "MO3", "HO1"], 
+
+                "ND6": ["LTB3", "HTBL1", "MO3", "HO1"], 
+
+                "ND7": ["LTB2", "HTB2", "MO3", "HO1"], 
+
+                "ND8": ["LTB2", "HTB2", "HO1"], 
+
+                "ND9": ["HO1"] 
+
+            }, 
+
+"C1": { 
+
+                "ND1": ["MTC1", "LTC1", "HTC1", "MO1", "HO1"], 
+
+                "ND2": ["MTC1", "LTC1", "HTC1", "MO1", "HO1"], 
+
+                "ND3": ["MTC1", "LTC1", "HTBL4", "MO1", "HO1"], 
+
+                "ND4": ["MTB1", "LTC1", "HTBL3", "MO1", "HO1"], 
+
+                "ND5": ["MTB1", "LTC1", "HTBL3", "MO1", "HO1"], 
+
+                "ND6": ["MTB1", "LTC1", "MO1", "HO1"], 
+
+                "ND7": ["MTB1", "LTC1", "HTA1", "MO1", "HO1"], 
+
+                "ND8": ["LTC1", "HTC1", "HO1"], 
+
+                "ND9": ["HO1"] 
+
+            }, 
+
+"C2": { 
+
+                "ND1": ["MTC1", "LTC1", "HTC1", "MO4", "HO2"], 
+
+                "ND2": ["MTC1", "LTC1", "HTC1", "MO4", "HO2"], 
+
+                "ND3": ["MTC1", "LTC1", "HTBL4", "MO4", "HO2"], 
+
+                "ND4": ["MTC1", "LTC1", "HTB1", "MO4", "HO2"], 
+
+                "ND5": ["MTA2", "LTC1", "HTA1", "MO4", "HO2"], 
+
+                "ND6": ["MTA2", "LTB2", "HTB1", "MO4", "HO2"], 
+
+                "ND7": ["MTA3", "LTB2", "HTA3", "MO4", "HO2"], 
+
+                "ND8": ["LTB2", "HTB2", "HO2"], 
+
+                "ND9": ["HO2"] 
+
+            }, 
+
+"C3": { 
+
+                "ND1": ["MTC2", "LTC2", "HTC2", "MO4", "HO2"], 
+
+                "ND2": ["MTC2", "LTC2", "HTC2", "MO4", "HO2"], 
+
+                "ND3": ["MTC2", "LTC2", "HTC2", "MO4", "HO2"], 
+
+                "ND4": ["MTA3", "LTC2", "HTB3", "MO4", "HO2"], 
+
+                "ND5": ["MTA3", "LTC2", "HTA3", "MO4", "HO2"], 
+
+                "ND6": ["MTA3", "LTC2", "HTB2", "MO4", "HO2"], 
+
+                "ND7": ["MTA3", "LTC2", "HTA3.5", "MO4", "HO2"], 
+
+                "ND8": ["MTA3", "LTC2", "HTC2", "HO2"], 
+
+                "ND9": ["HO2"] 
+
+            }, 
+
+"C4": { 
+
+                "ND1": ["MTA3.5", "LTC3", "HTC3", "MO4", "HO2"], 
+
+                "ND2": ["MTA3.5", "LTC3", "HTC3", "MO4", "HO2"], 
+
+                "ND3": ["MTA3", "LTC3", "HTB4", "MO4", "HO2"], 
+
+                "ND4": ["MTA3", "LTC3", "HTC2", "MO4", "HO2"], 
+
+                "ND5": ["MTA3", "LTC3", "HTB3", "MO4", "HO2"], 
+
+                "ND6": ["MTA3", "LTC3", "HTB3", "MO4", "HO2"], 
+
+                "ND7": ["MTA3", "LTC3", "HTA4", "MO4", "HO2"], 
+
+                "ND8": ["LTC3", "HTC3", "HO2"], 
+
+                "ND9": ["HO2"] 
+
+            }, 
+
+ "D2": { 
+
+                "ND1": ["MTD2", "LTD2", "HTD2", "MO4", "HO2"], 
+
+                "ND2": ["MTD2", "LTD2", "HTD2", "MO4", "HO2"], 
+
+                "ND3": ["MTD2", "LTD2", "HTB1", "MO4", "HO2"], 
+
+                "ND4": ["MTB1", "LTD2", "HTBL3", "MO4", "HO2"], 
+
+                "ND5": ["MTB1", "LTD2", "HTBL3", "MO4", "HO2"], 
+
+                "ND6": ["MTB1", "LTD2", "HTBL2", "MO4", "HO2"], 
+
+                "ND7": ["MTB1", "LTD2", "HTB1", "MO4", "HO2"], 
+
+                "ND8": ["MTA1", "LTD2", "HTD2", "HO2"], 
+
+                "ND9": ["HO2"] 
+
+            }, 
+
+         
+
+            "D3": { 
+
+                "ND1": ["MTD2", "LTD2", "HTD2", "MO4", "HO2"], 
+
+                "ND2": ["MTD2", "LTD2", "HTD2", "MO4", "HO2"], 
+
+                "ND3": ["MTD2", "LTD2", "HTD2", "MO4", "HO2"], 
+
+                "ND4": ["MTB2", "LTB2", "HTB1", "MO4", "HO2"], 
+
+                "ND5": ["MTA2", "LTB2", "HTA2", "MO4", "HO2"], 
+
+                "ND6": ["MTA2", "LTB2", "HTBL2", "MO4", "HO2"], 
+
+                "ND7": ["MTA2", "LTB2", "HTBL2", "MO4", "HO2"], 
+
+                "ND8": ["LTB2", "HTB2", "HO2"], 
+
+                "ND9": ["HO2"] 
+
+            }, 
+
+ "D4": { 
+
+                "ND1": ["MTD2", "LTD2", "HTD2", "MO4", "HO2"], 
+
+                "ND2": ["MTD2", "LTD2", "HTD2", "MO4", "HO2"], 
+
+                "ND3": ["MTD2", "LTD2", "HTD2", "MO4", "HO2"], 
+
+                "ND4": ["MTB2", "LTB2", "HTB1", "MO4", "HO2"], 
+
+                "ND5": ["MTA2", "LTB2", "HTA2", "MO4", "HO2"], 
+
+                "ND6": ["MTA2", "LTB2", "HTBL2", "MO4", "HO2"], 
+
+                "ND7": ["MTA2", "LTB2", "HTBL2", "MO4", "HO2"], 
+
+                "ND8": ["LTB2", "HTB2", "HO2"], 
+
+                "ND9": ["HO2"] 
+
+            }, 
+
+"0M1": { 
+
+                "ND1": ["LTBL1", "HTBL1", "MO0", "HO0"], 
+
+                "ND2": ["MTBL1", "LBL12", "MO0", "HO0"], 
+
+                "ND3": ["MO0", "HO0"], 
+
+                "ND4": ["MO0", "HO0"], 
+
+                "ND5": ["MO0", "HO0"], 
+
+                "ND6": ["MO0", "HO0"], 
+
+                "ND7": ["MO0", "HO0"], 
+
+                "ND8": ["HO0"], 
+
+                "ND9": ["HO0"] 
+
+            }, 
+
+"0M2": { 
+
+                "ND1": ["MTBL2", "LTBL2", "HTBL2", "MO0", "HO0"], 
+
+                "ND2": ["MTBL2", "LTBL2", "HTBL2", "MO0", "HO0"], 
+
+                "ND3": ["LTBL1", "MO0", "HO0"], 
+
+                "ND4": ["LTBL1","MO0", "HO0"], 
+
+                "ND5": ["LTBL1", "MO0", "HO0"], 
+
+                "ND6": ["LTBL1", "MO0", "HO0"], 
+
+                "ND7": ["LTBL1","MO0", "HO0"], 
+
+                "ND8": ["HO0"], 
+
+                "ND9": ["HO0"] 
+
+            }, 
+
+"0M3": { 
+
+                "ND1": ["MTBL2", "LTBL3", "HTBL3", "MO0", "HO0"], 
+
+                "ND2": ["MTBL2", "LTBL3", "HTBL3", "MO0", "HO0"], 
+
+                "ND3": ["LTBL2", "MO0", "HO0"], 
+
+                "ND4": ["LTBL2","MO0", "HO0"], 
+
+                "ND5": ["LTBL2", "MO0", "HO0"], 
+
+                "ND6": ["LTBL2", "MO0", "HO0"], 
+
+                "ND7": ["LTBL2","MO0", "HO0"], 
+
+                "ND8": ["HO0"], 
+
+                "ND9": ["HO0"] 
+
+            } 
+
+          }; 
+
+  
+
+    function convertShade() { 
+
+      const incisal = document.getElementById("incisal").value.trim().toUpperCase(); 
+
+      const body = document.getElementById("body").value.trim().toUpperCase(); 
+
+      const gingival = document.getElementById("gingival").value.trim().toUpperCase(); 
+
+      const stump = document.getElementById("stump").value.trim().toUpperCase(); 
+
+  
+
+      const baseShade = incisal || body || gingival; 
+
+      const resultDiv = document.getElementById("results"); 
+
+  
+
+      if (baseShade && stump && materialTypeMapping[baseShade] && materialTypeMapping[baseShade][stump]) { 
+
+        const materials = materialTypeMapping[baseShade][stump]; 
+
+        resultDiv.innerHTML = `<p>Material Choices for <strong>${baseShade}</strong> on <strong>${stump}</strong>:</p><p>${materials.join(", ")}</p>`; 
+
+      } else { 
+
+        resultDiv.innerHTML = `<p>No matching materials found for <strong>${baseShade}</strong> with <strong>${stump}</strong>.</p>`; 
+
+      } 
+
+    } 
+
+  </script> 
+
+  
+
+</body> 
+
+</html> 
