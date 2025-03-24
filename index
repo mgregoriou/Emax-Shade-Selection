@@ -74,10 +74,8 @@
 
   
 
-  <!-- Company Logo --> 
-
- <img src="OIP.jpg" alt="Company Logo" onerror="this.onerror=null; this.src='https://can01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fvia.placeholder.com%2F300x100%3Ftext%3DLogo&...">
-
+<!-- Logo -->
+<img src="OIP.jpeg" alt="Company Logo" onerror="this.onerror=null; this.src='default-logo.png';">
   <h1>Emax Press Shade Converter</h1> 
 
   
