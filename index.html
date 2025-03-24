@@ -534,17 +534,21 @@
 
     function convertShade() { 
 
-      const incisal = document.getElementById("incisal").value.trim().toUpperCase(); 
+   const incisal = document.getElementById("incisal").value.trim().toUpperCase();
+const body = document.getElementById("body").value.trim().toUpperCase();
+const gingival = document.getElementById("gingival").value.trim().toUpperCase();
+const stump = document.getElementById("stump").value.trim().toUpperCase();
 
-      const body = document.getElementById("body").value.trim().toUpperCase(); 
+// Normalize base shades like OM1 to 0M1
+function normalizeShade(shade) {
+  if (/^OM\d$/i.test(shade)) {
+    return '0' + shade.slice(1).toUpperCase();
+  }
+  return shade;
+}
 
-      const gingival = document.getElementById("gingival").value.trim().toUpperCase(); 
-
-      const stump = document.getElementById("stump").value.trim().toUpperCase(); 
-
-  
-
-      const baseShade = incisal || body || gingival; 
+const baseShadeRaw = incisal || body || gingival;
+const baseShade = normalizeShade(baseShadeRaw);
 
       const resultDiv = document.getElementById("results"); 
 
