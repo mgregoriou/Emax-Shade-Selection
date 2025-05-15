@@ -1,126 +1,73 @@
 <!DOCTYPE html> 
-
 <html lang="en"> 
-
 <head> 
-
   <meta charset="UTF-8" /> 
-
   <title>Emax Press Shade Converter</title> 
-
   <style> 
-
     body { 
-
       font-family: Arial, sans-serif; 
-
       text-align: center; 
-
       padding: 20px; 
-
     } 
-
     img { 
-
       width: 300px; 
-
       margin-bottom: 10px; 
-
     } 
-
     input { 
-
       margin: 5px; 
-
       padding: 5px; 
-
       text-transform: uppercase; 
-
     } 
-
     button { 
-
       padding: 8px 16px; 
-
       background-color: #007bff; 
-
       color: white; 
-
       border: none; 
-
       cursor: pointer; 
-
     } 
-
     button:hover { 
-
       background-color: #0056b3; 
-
     } 
-
     #results { 
-
       margin-top: 20px; 
-
       font-weight: bold; 
-
     } 
-
   </style> 
-
 </head> 
-
 <body> 
 
-  
-
- <!-- Logo -->
-<img src="OIP.jpeg" alt="Company Logo" onerror="this.onerror=null; this.src='default-logo.png';">
-
-
+  <!-- Logo -->
+  <img src="OIP.jpeg" alt="Company Logo" onerror="this.onerror=null; this.src='default-logo.png';">
   <h1>Emax Press Shade Converter</h1> 
 
-  
-
   <!-- Inputs --> 
-
   <label>Incisal: <input type="text" id="incisal" /></label><br> 
-
   <label>Body: <input type="text" id="body" /></label><br> 
-
   <label>Gingival: <input type="text" id="gingival" /></label><br> 
 
- <label>Stump Shade:
-  <select id="stump">
-    <option value="ND1">ND1</option>
-    <option value="ND2">ND2</option>
-    <option value="ND3" selected>ND3 (Default)</option>
-    <option value="ND4">ND4</option>
-    <option value="ND5">ND5</option>
-    <option value="ND6">ND6</option>
-    <option value="ND7">ND7</option>
-    <option value="ND8">ND8</option>
-    <option value="ND9">ND9</option>
-  </select>
-</label><br>
+  <label>Stump Shade:
+    <select id="stump">
+      <option value="ND1">ND1</option>
+      <option value="ND2">ND2</option>
+      <option value="ND3" selected>ND3 (Default)</option>
+      <option value="ND4">ND4</option>
+      <option value="ND5">ND5</option>
+      <option value="ND6">ND6</option>
+      <option value="ND7">ND7</option>
+      <option value="ND8">ND8</option>
+      <option value="ND9">ND9</option>
+    </select>
+  </label><br>
 
   <small style="display:block; margin-top:-5px; font-size: 0.9em; color: #555;">
-  If there is no provided stump, please input <strong>ND3</strong>.
-</small>
-
-  
+    If there is no provided stump, please input <strong>ND3</strong>.
+  </small>
 
   <button onclick="convertShade()">Convert</button> 
-
-  
-
   <div id="results"></div> 
 
-  
-
   <script> 
-
-    const materialTypeMapping = { 
+const materialTypeMapping = { 
 
  
 
@@ -572,49 +519,40 @@
   "B91": "C1", "B92": "D2", "B94": "C2", "B95": "C2", "B96": "C4"
 };
 
+    function convertShade() {
+      const incisal = document.getElementById("incisal").value.trim().toUpperCase();
+      const body = document.getElementById("body").value.trim().toUpperCase();
+      const gingival = document.getElementById("gingival").value.trim().toUpperCase();
+      const stump = document.getElementById("stump").value.trim().toUpperCase();
 
-    function convertShade() { 
+      function normalizeShade(shade) {
+        if (/^OM\d$/i.test(shade)) {
+          return '0' + shade.slice(1).toUpperCase();
+        }
+        return shade;
+      }
 
-   const incisal = document.getElementById("incisal").value.trim().toUpperCase();
-const body = document.getElementById("body").value.trim().toUpperCase();
-const gingival = document.getElementById("gingival").value.trim().toUpperCase();
-const stump = document.getElementById("stump").value.trim().toUpperCase();
+      const baseShadeRaw = incisal || body || gingival;
+      const normalizedRaw = normalizeShade(baseShadeRaw);
+      const baseShade = shadeAliasMapping[normalizedRaw] || normalizedRaw;
 
-// Normalize base shades like OM1 to 0M1
-function normalizeShade(shade) {
-  if (/^OM\d$/i.test(shade)) {
-    return '0' + shade.slice(1).toUpperCase();
-  }
-  return shade;
-}
+      const resultDiv = document.getElementById("results");
 
-const baseShadeRaw = incisal || body || gingival;
-const normalizedRaw = normalizeShade(baseShadeRaw);
-const baseShade = shadeAliasMapping[normalizedRaw] || normalizedRaw;
+      if (baseShade && stump && materialTypeMapping[baseShade] && materialTypeMapping[baseShade][stump]) {
+        const materials = materialTypeMapping[baseShade][stump];
+        let resultHTML = `<p>Material Choices for <strong>${baseShade}</strong> on <strong>${stump}</strong>:</p><p>${materials.join(", ")}</p>`;
 
+        const containsMOorHO = materials.some(m => m.startsWith("MO") || m.startsWith("HO"));
+        if (containsMOorHO) {
+          resultHTML += `<p style="margin-top: 15px; color: red; font-weight: bold;">PLEASE CONTACT MARIA TO VERIFY SHADE IF MO OR HO INGOTS ARE SELECTED.</p>`;
+        }
 
-      const resultDiv = document.getElementById("results"); 
-
-  
-
-      if (baseShade && stump && materialTypeMapping[baseShade] && materialTypeMapping[baseShade][stump]) { 
-
-        const materials = materialTypeMapping[baseShade][stump]; 
-
-        resultDiv.innerHTML = `<p>Material Choices for <strong>${baseShade}</strong> on <strong>${stump}</strong>:</p><p>${materials.join(", ")}</p>`; 
-
-      } else { 
-
-        resultDiv.innerHTML = `<p>No matching materials found for <strong>${baseShade}</strong> with <strong>${stump}</strong>.</p>`; 
-
-      } 
-
-    } 
-
+        resultDiv.innerHTML = resultHTML;
+      } else {
+        resultDiv.innerHTML = `<p>No matching materials found for <strong>${baseShade}</strong> with <strong>${stump}</strong>.</p>`;
+      }
+    }
   </script> 
 
-  
-
 </body> 
-
-</html> 
+</html>
