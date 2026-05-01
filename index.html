@@ -63,11 +63,18 @@
     If there is no provided stump, please input <strong>ND3</strong>.
   </small>
 
-  <button onclick="convertShade()">Convert</button> 
-  <div id="results"></div> 
+<button onclick="convertShade()">Convert</button>
+<div id="results"></div>
 
-  <script> 
-const materialTypeMapping = { 
+<script>
+
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    convertShade();
+  }
+});
+
+const materialTypeMapping = {
 
  
 
